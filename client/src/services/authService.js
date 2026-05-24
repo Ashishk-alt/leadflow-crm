@@ -50,35 +50,47 @@
 import API from './api';
 
 const login = async (email, password) => {
-  const response = await API.post('/auth/login', {
-    email,
-    password,
-  });
+  try {
+    const response = await API.post('/auth/login', {
+      email,
+      password,
+    });
 
-  const data = response.data;
+    const data = response.data;
 
-  if (data.success && data.data) {
-    localStorage.setItem('user', JSON.stringify(data.data));
+    if (data.success && data.data) {
+      localStorage.setItem('user', JSON.stringify(data.data));
+    }
+
+    return data.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || 'Login failed'
+    );
   }
-
-  return data.data;
 };
 
 const register = async (name, email, password, role) => {
-  const response = await API.post('/auth/register', {
-    name,
-    email,
-    password,
-    role,
-  });
+  try {
+    const response = await API.post('/auth/register', {
+      name,
+      email,
+     password,
+      role,
+    });
 
-  const data = response.data;
+    const data = response.data;
 
-  if (data.success && data.data) {
-    localStorage.setItem('user', JSON.stringify(data.data));
+    if (data.success && data.data) {
+      localStorage.setItem('user', JSON.stringify(data.data));
+    }
+
+    return data.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || 'Registration failed'
+    );
   }
-
-  return data.data;
 };
 
 const logout = () => {
